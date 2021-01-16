@@ -15,33 +15,72 @@
 /* jslint node: true */
 "use strict";
 
-const ad = document.querySelectorAll('.promo__adv img');
-const genre = document.querySelector('.promo__genre');
-const promoBG = document.querySelector('.promo__bg');
-const movieList = document.querySelectorAll('.promo__interactive-item');
+document.addEventListener('DOMContentLoaded', () => {
 
-ad.forEach(value => {
-    value.remove();
+    const movieDB = {
+        movies: [
+            "Логан",
+            "Лига справедливости",
+            "Ла-ла лэнд",
+            "Одержимость",
+            "Скотт Пилигрим против..."
+        ]
+    };
+    
+    const ad = document.querySelectorAll('.promo__adv img'),
+    genre = document.querySelector('.promo__genre'),
+    promoBG = document.querySelector('.promo__bg'),
+    movieList = document.querySelector('.promo__interactive-list'),
+    deleteItems = movieList.querySelectorAll('.delete'),
+    formMovie = document.querySelector('.add'),
+    favMovie = formMovie.querySelector('[type="checkbox"]'),
+    inputMovie = document.querySelector('.adding__input');
+
+    ad.forEach(value => {
+        value.remove();
+    });
+
+    genre.textContent = "драма";
+    promoBG.style.backgroundImage = "url(img/bg.jpg)";
+
+    function getMovieList(movies, parent) {
+        parent.innerHTML = '';
+
+        movies.sort();
+        movies.forEach((value, i) => {
+            parent.innerHTML += `<li class="promo__interactive-item">${i + 1}. ${value}<div class="delete"></div></li>`;
+        });
+
+        document.querySelectorAll('.delete').forEach((value, i) => {
+            value.addEventListener('click', e => {
+                movies.splice(i, 1);
+                getMovieList(movies, parent);
+            });
+        });
+    } 
+    
+    getMovieList(movieDB.movies, movieList);
+
+    formMovie.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if(inputMovie.value) {
+            if(inputMovie.value.length > 21) {
+                movieDB.movies.push(inputMovie.value.slice(0, 22) + '...');
+            } else {
+                movieDB.movies.push(inputMovie.value);
+            }
+
+            if(favMovie.checked) {
+                console.log("Добавляем любимый фильм");
+            }
+
+            getMovieList(movieDB.movies, movieList);
+
+            e.target.reset();
+        } 
+    });    
 });
 
-genre.textContent = "драма";
-promoBG.style.backgroundImage = "url(img/bg.jpg)";
-
-const movieDB = {
-    movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
-    ]
-};
-
-movieDB.movies.sort();
-
-movieList.forEach((value, i) => {
-    value.textContent = `${i + 1}. ${movieDB.movies[i]}`;
-});
 
 
 
