@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     genre = document.querySelector('.promo__genre'),
     promoBG = document.querySelector('.promo__bg'),
     movieList = document.querySelector('.promo__interactive-list'),
-    deleteItems = movieList.querySelectorAll('.delete'),
     formMovie = document.querySelector('.add'),
     favMovie = formMovie.querySelector('[type="checkbox"]'),
     inputMovie = document.querySelector('.adding__input');
